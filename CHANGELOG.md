@@ -13,7 +13,7 @@ This file records implemented changes that have not yet been assigned to a forma
 - Native Apple artwork lookup and bounded caching on the Mac, with paired optional artwork/track URLs included in ordinary uploads. The Worker does not query Apple; the page retains a browser fallback for missing matches.
 - A native PNG app-icon catalog with localized aliases, static links, and `/api/icons` image routes supporting HEAD, conditional requests, and one-hour caching without KV access. The exporter supports 128 mappings and user application directories; optional macOSicons synchronization skips native entries and keeps provider caches out of Git.
 - A same-domain VitePress status page, documentation, OpenAPI contract, and searchable icon catalog, plus Worker/native checks, CI, contribution and security guidance, issue/PR templates, and dependency updates.
-- Task-based documentation navigation and `check:repo` for required files, package/lockfile consistency, tracked local-state paths, and Markdown file links. Site validation also checks local HTML anchors; `.nvmrc` shares the Node.js 22 CI baseline, with package metadata and text/binary Git attributes.
+- Task-based documentation navigation and `check:repo` for required files, package/lockfile consistency, tracked local-state paths, and Markdown file links. Site validation also checks local HTML anchors; `.nvmrc` sets the Node.js 24 CI baseline (Node.js 22 or newer stays the minimum), with package metadata and text/binary Git attributes.
 
 ### Changed
 
