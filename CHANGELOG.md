@@ -4,6 +4,8 @@ This file records implemented changes that have not yet been assigned to a forma
 
 ## Unreleased
 
+- Move the live status entry point to the xw7 panel and keep this site focused on agent and API documentation. Existing API routes remain available.
+
 ### Added
 
 - Native Bash/JXA collection for Apple Music, foreground and running GUI apps, battery, and system load, with independent privacy controls, sensitive-app filtering, and user LaunchAgent installation and removal.
