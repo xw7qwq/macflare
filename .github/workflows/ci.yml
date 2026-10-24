@@ -48,3 +48,16 @@ jobs:
           python3 agent/tests/window-native.py
       - name: Test application icon bundle discovery
         run: python3 -B scripts/tests/test_export_app_icons.py
+
+  check:
+    name: check
+    if: always()
+    needs: [worker, macos-agent]
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - name: Require all platform checks
+        env:
+          WORKER_RESULT: ${{ needs.worker.result }}
+          MACOS_RESULT: ${{ needs.macos-agent.result }}
+        run: test "$WORKER_RESULT" = success && test "$MACOS_RESULT" = success
