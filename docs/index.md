@@ -2,15 +2,11 @@
 outline: false
 ---
 
-<script setup>
-import NowStatus from './.vitepress/theme/NowStatus.vue'
-</script>
+# MacFlare 文档
 
-# Mac 的延时动态
+Mac 的状态展示已移到 [xw7 面板的「状态」页](https://lucius7.dev/now/)。这里保留采集器、部署和只读 API 的使用文档。
 
-电池、应用和音乐的公开动态。Mac 每 5 分钟上传最近 15 分钟的变化，通常延时 7 分钟播放，普通应用／歌曲切换约每 2 秒合并显示，减少闪动；首包到达前等待有效窗口，取得窗口后暖机；缺少覆盖时停止播放。
-
-<NowStatus />
+MacFlare 本机由 macOS 原生 `launchd` 定时推送状态；API 继续提供音乐、应用和设备信息，现有博客组件和客户端可以继续使用。
 
 ## API 快速调用
 
@@ -24,17 +20,17 @@ import NowStatus from './.vitepress/theme/NowStatus.vue'
 | 电池与负载 | `/api/device` | `device.battery`、`device.system` |
 | 固定应用图标 | `/api/icons` | 随部署发布的原生 PNG 清单 |
 
-本页每 60 秒只请求一次 `/api/timeline`，其余变化在内存播放；短时间连续切换只展示最后候选，时间线 API 中的已有事件保留。敏感遮蔽、清空与断档会立即撤掉旧显示。简单页面每轮只读一次 `/api/now`；四个分类接口各自读取一次 KV，不要并行轮询全部入口。封面优先使用 Mac 上报的 URL，缺少有效 URL 时保留浏览器兼容查询。[curl 与图片示例](integrations.md#按需选择接口) · [浏览图标与复制地址](app-icons.md#已发布图标) · [完整 API](api.md)
+支持连续播放的客户端每轮只请求一次 `/api/timeline`，其余变化在内存播放；短时间连续切换只展示最后候选，时间线 API 中的已有事件保留。敏感遮蔽、清空与断档会立即撤掉旧显示。简单页面每轮只读一次 `/api/now`；四个分类接口各自读取一次 KV，不要并行轮询全部入口。封面优先使用 Mac 上报的 URL，缺少有效 URL 时保留浏览器兼容查询。[curl 与图片示例](integrations.md#按需选择接口) · [浏览图标与复制地址](app-icons.md#已发布图标) · [完整 API](api.md)
 
 ## 在你自己的 Mac 上使用
 
 MacFlare 本机只使用系统自带工具。部署一次后，由 macOS 原生 `launchd` 定时推送；无需第三方后台管理器或播放器。
 
-[文档导航](guide.md) 按「部署自己的状态页」「接入现有 API」「维护和贡献」提供完整阅读路径。
+[文档导航](guide.md) 按「部署自己的采集器与 API」「接入现有 API」「维护和贡献」提供完整阅读路径。
 
 | 从哪里开始 | 文档 |
 | --- | --- |
-| 部署自己的状态页和 API | [快速开始](getting-started.md) |
+| 部署自己的采集器与 API | [快速开始](getting-started.md) |
 | 绑定域名、更新与回滚 | [部署指南](deployment.md) |
 | 隐藏应用、选择更新模式 | [本机配置](configuration.md) |
 | 延长免费额度的使用时间 | [额度与更新策略](quotas.md) |

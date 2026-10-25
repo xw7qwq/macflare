@@ -14,7 +14,7 @@
 | 电池与负载 | `/api/device` | `device.battery`、`device.system` | 1 |
 | 固定图标清单／PNG | `/api/icons`、`/api/icons/<id>.png` | 有限静态图标资源 | 0 |
 
-下面是相互独立的调用示例，按需要选择。动态页面每 60 秒读取一次 `/api/timeline` 并在内存播放，简单页面只取一次 `/api/now`；不要并行轮询所有分类接口，它们不会合并 KV 读取。首页使用时间线，优先使用 Mac 上报的封面 URL，缺少有效 URL 时保留浏览器兼容查询。
+下面是相互独立的调用示例，按需要选择。动态页面每 60 秒读取一次 `/api/timeline` 并在内存播放，简单页面只取一次 `/api/now`；不要并行轮询所有分类接口，它们不会合并 KV 读取。参考状态组件使用时间线，优先使用 Mac 上报的封面 URL，缺少有效 URL 时保留浏览器兼容查询。
 
 ```sh
 # 音乐：歌名、歌手，以及可能为 null 的封面／歌曲链接。
@@ -42,7 +42,7 @@ curl -sS https://YOUR_HOST/api/timeline
 
 v2 一次返回完整窗口，包含基线、变化和缺口。不要只取 `events` 的最后一项显示：窗口有意提前送达，让页面按各事件原来的时间间隔回放。以响应的 `server_time` 校准时钟，正常目标是该时间减 420 秒；顺序应用目标时刻之前的事件，遇到缺口或尚未覆盖的时间则显示缓冲／采集中断。
 
-仓库提供可复用的 [WindowPlayback 状态机](https://github.com/xw7qwq/macflare/blob/main/shared/playback.js)，以及 [首页组件集成](https://github.com/xw7qwq/macflare/blob/main/docs/.vitepress/theme/NowStatus.vue)。先从同一仓库版本复制 `shared/playback.js` 与它直接依赖的 [shared/timeline.js](https://github.com/xw7qwq/macflare/blob/main/shared/timeline.js)，放入你自己前端入口旁的 `shared/` 目录，再由自己的构建工具打包或作为 ES modules 发布。下面的相对 import 指向你自己项目中的副本；本项目没有发布 npm 包，线上站点也不提供 `/shared/playback.js` 静态入口。最小调用顺序：
+仓库提供可复用的 [WindowPlayback 状态机](https://github.com/xw7qwq/macflare/blob/main/shared/playback.js)，以及 [参考状态组件组件集成](https://github.com/xw7qwq/macflare/blob/main/docs/.vitepress/theme/NowStatus.vue)。先从同一仓库版本复制 `shared/playback.js` 与它直接依赖的 [shared/timeline.js](https://github.com/xw7qwq/macflare/blob/main/shared/timeline.js)，放入你自己前端入口旁的 `shared/` 目录，再由自己的构建工具打包或作为 ES modules 发布。下面的相对 import 指向你自己项目中的副本；本项目没有发布 npm 包，线上站点也不提供 `/shared/playback.js` 静态入口。最小调用顺序：
 
 ```js
 import { WindowPlayback } from './shared/playback.js';
@@ -60,7 +60,7 @@ const view = player.view(performance.now());
 
 持续使用同一个实例，避免每轮重新建立播放头。状态机处理旧窗口不倒退、短暂网络错误继续消费覆盖、窗口耗尽停播、新会话清旧状态及不可恢复缺口提示；它只保存内存数据。播放延迟在恢复时可超过 420 秒，不能为了追到固定延迟而跳过已缓存变化。[时序与恢复规则](buffering.md)
 
-需要复用首页较平稳的展示节奏时，可再从同一版本复制 [shared/presentation.js](https://github.com/xw7qwq/macflare/blob/main/shared/presentation.js)，作为上述两个文件之外的第三个模块：
+需要复用参考状态组件较平稳的展示节奏时，可再从同一版本复制 [shared/presentation.js](https://github.com/xw7qwq/macflare/blob/main/shared/presentation.js)，作为上述两个文件之外的第三个模块：
 
 ```js
 import { WindowPresentation } from './shared/presentation.js';
@@ -187,7 +187,7 @@ curl -sS https://YOUR_HOST/api/icons
      title="应用图标版权归原作者">
 ```
 
-仅需图片展示时，推荐将地址改为 `https://YOUR_HOST/app-icons/visual-studio-code.png`。它与 API 使用相同 PNG，但通过静态资源服务，无需执行 Worker；首页使用此方式。静态清单也可从 `/app-icons/index.json` 读取。
+仅需图片展示时，推荐将地址改为 `https://YOUR_HOST/app-icons/visual-studio-code.png`。它与 API 使用相同 PNG，但通过静态资源服务，无需执行 Worker；参考状态组件使用此方式。静态清单也可从 `/app-icons/index.json` 读取。
 
 图标 API 支持 GET、HEAD、OPTIONS，成功缓存 1 小时并保留 ETag 条件请求；不读取 KV 或第三方服务，但计 Worker 请求。图标随部署保留，与 Mac 在线状态无关，不会从未知应用名即时生成图标。保留版权说明，图标不属于代码 MIT 授权范围。[图标维护](app-icons.md) · [API 契约](api.md)
 

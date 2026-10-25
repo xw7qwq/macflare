@@ -1,6 +1,6 @@
 # 文档开发与发布
 
-本页面向维护文档的贡献者；使用者从 [文档导航](guide.md) 选择阅读路径。文档与状态页面使用 VitePress 静态构建，和 API 一起发布到同一个 Cloudflare Worker。源码始终在当前 GitHub 仓库，不使用 GitHub Pages。分支、提交和 PR 约定见 [贡献指南](https://github.com/xw7qwq/macflare/blob/main/CONTRIBUTING.md)。
+本页面向维护文档的贡献者；使用者从 [文档导航](guide.md) 选择阅读路径。文档使用 VitePress 静态构建，和 API 一起发布到同一个 Cloudflare Worker。源码始终在当前 GitHub 仓库，不使用 GitHub Pages。分支、提交和 PR 约定见 [贡献指南](https://github.com/xw7qwq/macflare/blob/main/CONTRIBUTING.md)。
 
 ## 内容放在哪里
 

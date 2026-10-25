@@ -44,7 +44,9 @@ for (const page of pages) {
     checked++;
   }
 }
-assert.ok(readFileSync(join(root, 'index.html'), 'utf8').includes('Mac 当前状态'), 'Home status panel is missing.');
+const home = readFileSync(join(root, 'index.html'), 'utf8');
+assert.ok(home.includes('MacFlare 文档') && home.includes('https://lucius7.dev/now/'), 'Documentation home and panel link are missing.');
+assert.ok(!home.includes('aria-label="Mac 当前状态"'), 'Documentation home must not mount the live status panel.');
 const icons = JSON.parse(readFileSync(join(root, 'app-icons/index.json'), 'utf8'));
 assert.equal(icons.version, 1);
 assert.ok(icons.icons.length > 0, 'The repository app icon collection is empty.');

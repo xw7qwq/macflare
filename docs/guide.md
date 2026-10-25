@@ -1,8 +1,8 @@
 # 文档导航
 
-MacFlare 的文档按部署者、接口使用者和贡献者的任务组织。首页展示这个部署的公开状态；如果要上报自己的 Mac，请部署独立的 Worker 与 KV。
+MacFlare 的文档按部署者、接口使用者和贡献者的任务组织。本网站保留部署与接口文档；公开状态移至 [xw7 面板](https://lucius7.dev/now/)。如果要上报自己的 Mac，请部署独立的 Worker 与 KV。
 
-## 部署自己的状态页
+## 部署自己的采集器与 API
 
 1. [快速开始](getting-started.md)：获取项目、创建 KV、部署 Worker，再安装 Mac Agent 并核验后台上传。
 2. [本机配置](configuration.md)：选择公开字段、屏蔽应用、修改调度模式以及停止或卸载。
