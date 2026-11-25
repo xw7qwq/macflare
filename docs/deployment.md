@@ -107,7 +107,7 @@ Worker 的版本和部署记录可在 Cloudflare 控制台查看。回滚时选�
 1. `GET /api/health` 返回 `{"ok":true,"service":"macflare"}`。这只证明 Worker 路由可以响应，不能证明 KV 或 Mac 正常。
 2. 无 Bearer 的 `POST /api/batch` 和 `POST /api/update` 均返回 401，确保新旧入口都未开放匿名写入。
 3. buffered 检查 `/api/timeline` 与私有 `last-result.json` 的批次结果；快照模式才使用手动 `--once`。核对允许公开的电量、应用及时间。KV 跨位置传播可能延迟，不应每秒密集重试。
-4. 观察至少两个后台上传周期，确认 `updated_at` 和 buffered 的 `batch_seq`、`window_end` 前进；首次暖机之后检查时间线中的变化顺序，并检查首页普通切换的 2 秒合并与隐私／断档立即清除。一次手动成功不能证明 LaunchAgent 有效。
+4. 观察至少两个后台上传周期，确认 `updated_at` 和 buffered 的 `batch_seq`、`window_end` 前进；首次暖机之后检查时间线中的变化顺序；页面使用参考状态组件时，再检查普通切换的 2 秒合并与隐私／断档立即清除。一次手动成功不能证明 LaunchAgent 有效。
 5. Music 正在播放时，分别验证手动采集与后台周期中的歌名、歌手；升级 Agent 后还可检查成对封面 URL，未匹配时为空不影响其他状态；暂停、退出和拒绝授权分别检查降级语义。后台自动化授权主体可能显示为 **bash**，需用户允许它控制 Music，不能用前台成功代替后台验证。见 [Music 授权排查](troubleshooting.md#music-状态为空或不可用)。
 6. 停止后台任务，等待对应响应的 `expires_at` 后直接重查，应为 offline。buffered 的 `/api/timeline` 保留截止与 `/api/now` 播放覆盖截止不同，核验时分别使用各自返回的值，见 [API 时间语义](api.md#get-api-now)。GitHub 徽章缓存不用于此验收。
 7. 按需重新安装启用后台，并记录实际验证日期、版本和未解决问题。

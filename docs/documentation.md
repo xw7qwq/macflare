@@ -1,6 +1,6 @@
 # 文档开发与发布
 
-本页面向维护文档的贡献者；使用者从 [文档导航](guide.md) 选择阅读路径。文档与状态页面使用 VitePress 静态构建，和 API 一起发布到同一个 Cloudflare Worker。源码始终在当前 GitHub 仓库，不使用 GitHub Pages。分支、提交和 PR 约定见 [贡献指南](https://github.com/xw7qwq/macflare/blob/main/CONTRIBUTING.md)。
+本页面向维护文档的贡献者；使用者从 [文档导航](guide.md) 选择阅读路径。文档使用 VitePress 静态构建，和 API 一起发布到同一个 Cloudflare Worker。源码始终在当前 GitHub 仓库，不使用 GitHub Pages。分支、提交和 PR 约定见 [贡献指南](https://github.com/xw7qwq/macflare/blob/main/CONTRIBUTING.md)。
 
 ## 内容放在哪里
 
@@ -14,7 +14,7 @@
 | [接入示例](integrations.md) | 客户端消费、图片和博客示例 |
 | [文档导航](guide.md) | 阅读路径和页面入口 |
 
-正文位于 `docs/*.md`，导航和站点地址位于 `docs/.vitepress/config.mjs`，首页组件位于 `docs/.vitepress/theme/`。`docs/.vitepress/dist/` 是构建产物，不进入 Git。其他目录职责见 [仓库导航](guide.md#仓库职责)。
+正文位于 `docs/*.md`，导航和站点地址位于 `docs/.vitepress/config.mjs`，参考状态组件和主题位于 `docs/.vitepress/theme/`。`docs/.vitepress/dist/` 是构建产物，不进入 Git。其他目录职责见 [仓库导航](guide.md#仓库职责)。
 
 ## 本地开发
 
@@ -25,7 +25,7 @@ npm ci
 npm run docs:dev
 ```
 
-纯文档开发服务器没有 Worker API，首页会显示暂时无法读取；这不会尝试连接维护者实例。核验同域完整行为：
+纯文档开发服务器没有 Worker API，也不会连接维护者实例。核验同域完整行为：
 
 ```sh
 cp .dev.vars.example .dev.vars

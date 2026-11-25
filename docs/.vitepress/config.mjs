@@ -22,7 +22,7 @@ export default defineConfig({
     ],
     sidebar: [
       { text: '开始使用', items: [
-        { text: '当前状态与概览', link: '/' },
+        { text: '文档首页', link: '/' },
         { text: '文档导航', link: '/guide' },
         { text: '快速开始', link: '/getting-started' },
         { text: '本机配置与调度', link: '/configuration' },

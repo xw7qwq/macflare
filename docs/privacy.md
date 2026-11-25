@@ -27,13 +27,15 @@ MacFlare 把选择的设备状态发布到公网。知道部署地址的任何�
 
 `INGEST_TOKEN` 是发送状态的凭据，不是 Cloudflare 账户 API Token。前端、GitHub README、Issue、截图和 Git 历史都不应包含它。读取设备状态时，前端调用公开的 `GET /api/timeline` 或 `GET /api/now`，不要把 `/api/batch` 或 `/api/update` 的令牌打包进浏览器代码。
 
-## 首页歌曲封面
+<span id="首页歌曲封面"></span>
 
-首页优先使用当前有效播放切片中由 Mac 上报的 `music.artwork_url` 与 `music.track_url`。访客浏览器向 Apple 图片 CDN 加载封面，点击链接访问 Apple 歌曲页面；Apple 会收到这些图片／网页请求和访客网络信息。停止播放或快照过期时撤掉封面，查询或图片失败不影响歌名和歌手。
+## 参考状态组件歌曲封面
+
+参考状态组件优先使用当前有效播放切片中由 Mac 上报的 `music.artwork_url` 与 `music.track_url`。访客浏览器向 Apple 图片 CDN 加载封面，点击链接访问 Apple 歌曲页面；Apple 会收到这些图片／网页请求和访客网络信息。停止播放或快照过期时撤掉封面，查询或图片失败不影响歌名和歌手。
 
 缺少有效上报 URL 时，页面保留浏览器查询，以兼容旧 Agent 或没有匹配结果的快照。只有新鲜的 `playing`／`paused` 状态且歌名歌手齐全时才查询：GET 参数为 `term=歌名+歌手`、`entity=song`、`country=us`、`limit=5`。此时 Apple 还会收到公开曲目信息和访客搜索请求，包括连接 IP；不发送电池、应用、负载或令牌。美国商店无可信匹配时不盲选其他歌曲。[Apple 搜索参数](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/Searching.html)
 
-浏览器兼容查询的缓存只存在当前页面内存：成功 1 小时、普通失败或无匹配 5 分钟，最多 50 条；取消请求不缓存，不写本地持久存储或 KV。浏览器与 Apple 自身的 HTTP 缓存遵循各自策略。首页只轮询 `/api/timeline`，不为封面额外请求 `/api/music`。[Apple 封面和歌曲字段](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/UnderstandingSearchResults.html)
+浏览器兼容查询的缓存只存在当前页面内存：成功 1 小时、普通失败或无匹配 5 分钟，最多 50 条；取消请求不缓存，不写本地持久存储或 KV。浏览器与 Apple 自身的 HTTP 缓存遵循各自策略。参考状态组件只轮询 `/api/timeline`，不为封面额外请求 `/api/music`。[Apple 封面和歌曲字段](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/UnderstandingSearchResults.html)
 
 ## 音乐 API 与封面上报
 
@@ -45,9 +47,11 @@ buffered 另外在内存中为窗口近期最多 64 首曲目缓存匹配结果�
 
 Worker 不再请求 Apple，也不通过 Cache API 缓存音乐匹配结果。`/api/now` 保留旧字段，并在上报提供时返回两个可选 URL；`/api/music` 始终包含这两个字段，旧 Agent 没有上报时为 `null`。URL 与设备快照一起受服务端 TTL 限制，本机匹配缓存不会延长在线期限。先升级 Worker，再更新 Agent。[兼容升级](deployment.md#升级音乐封面上报)
 
-## 首页应用图标
+<span id="首页应用图标"></span>
 
-首页优先使用仓库中的原生 PNG。维护者在开发阶段从配置名单内的已安装应用导出图标；PNG 和应用名称、别名构成的有限清单会进入 Git 并公开发布。这不是实时运行列表，但可能透露维护者选用的软件；不要导出私有应用的图标或名称。
+## 参考状态组件应用图标
+
+参考状态组件优先使用仓库中的原生 PNG。维护者在开发阶段从配置名单内的已安装应用导出图标；PNG 和应用名称、别名构成的有限清单会进入 Git 并公开发布。这不是实时运行列表，但可能透露维护者选用的软件；不要导出私有应用的图标或名称。
 
 访客从同一 Cloudflare 站点的 `/app-icons/<id>.png` 加载原生图标，不向第三方图标服务查询。公开 `/api/icons` 和 `/api/icons/<id>.png` 提供相同清单与图片，Mac 离线或上报失败也仍可读取。Cloudflare 会收到图片请求及访客网络信息；图标请求不携带电池、负载、曲目、完整运行列表或任何令牌。隐私屏蔽后的 `System` 在状态页使用占位。
 
@@ -59,7 +63,7 @@ Worker 不再请求 Apple，也不通过 Cache API 缓存音乐匹配结果。`/
 
 buffered 是短期活动缓冲：本机先将应用／Music 已观测语义变化放入内存，再以权限 `600` 合并保存时间跨度最多 15 分钟的基线、变化和缺口；普通检查点最多每 10 秒一次，无变化覆盖心跳每 30 秒，隐私变化、启动、睡眠和上传边界立即保存。意外崩溃可能损失最近约 10 秒尚未保存的普通变化。磁盘检查点还可能落后内存约 10 秒变化／30 秒静默覆盖及阻塞延迟，文件最早数据不保证在当前时间减 15 分钟处立即物理删除。Worker 只保留最新接收的完整窗口，按 `window_end + 600 秒` 绝对过期。一个窗口最早的事件因此最多跨越约 25 分钟的云端有效范围。不能把它描述成“无历史”：访问者可以读取该窗口内的应用切换和曲目顺序。原始按键、鼠标点击、文档、网页历史与屏幕内容不在采集范围。
 
-硬件每 30 秒采样，电量按整数百分比／供电变化记录，负载的小幅变化按阈值和 120 秒后的成功采样合并，不保留全部微小波动。首页普通应用／歌曲／运行列表切换按 2 秒节奏合并，**不会从 API 的窗口中删除已有事件，也不是隐私过滤**。页面已接收到敏感遮蔽、字段清空、音乐停止／不可用、运行列表移除、缺口、离线或新会话时立即清除旧显示；公开 API 仍可读取窗口中已上报的内容。
+硬件每 30 秒采样，电量按整数百分比／供电变化记录，负载的小幅变化按阈值和 120 秒后的成功采样合并，不保留全部微小波动。参考状态组件普通应用／歌曲／运行列表切换按 2 秒节奏合并，**不会从 API 的窗口中删除已有事件，也不是隐私过滤**。页面已接收到敏感遮蔽、字段清空、音乐停止／不可用、运行列表移除、缺口、离线或新会话时立即清除旧显示；公开 API 仍可读取窗口中已上报的内容。
 
 网页窗口只存内存，不写 localStorage；页面关闭即丢失该内存。Mac 休眠或程序停止期间不能主动执行磁盘清理，重启会校验并裁剪过期缓存，不无限补传旧活动。eco／realtime 仅保存当前 v1 快照，期限通常为 180／60 秒。v1 单曲封面缓存成功结果最多复用 1 小时，buffered 近期曲目缓存最多 900 秒；两者都不延长云端期限。
 

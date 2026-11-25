@@ -1,6 +1,6 @@
 # HTTP API v1 / v2
 
-v1 为单个快照，v2 为有界滑动窗口；Worker 基础地址是部署输出的 HTTPS URL。首页的 2 秒普通状态展示合并不作用于这些 API；字段、事件序号及投影语义保持不变。本文示例都是合成数据。机器可读契约见 [OpenAPI 3.1](openapi.yaml)。
+v1 为单个快照，v2 为有界滑动窗口；Worker 基础地址是部署输出的 HTTPS URL。参考状态组件的 2 秒普通状态展示合并不作用于这些 API；字段、事件序号及投影语义保持不变。本文示例都是合成数据。机器可读契约见 [OpenAPI 3.1](openapi.yaml)。
 
 ## 路由
 
@@ -102,7 +102,7 @@ v2 时间统一为 `YYYY-MM-DDTHH:mm:ss.sssZ`，精确保留三位毫秒。`wind
 }
 ```
 
-此响应示例的 `window` 为便于阅读而省略内容，真实返回完整 v2 包（包含上一节所有字段）。`server_time` 用于客户端校准播放时钟；窗口内容不会套用首页的 2 秒视觉合并。`online` 表示窗口仍有效，不表示当前目标播放时刻已有覆盖。首次暖机、缺口和覆盖耗尽由客户端结合窗口判断。[推荐播放行为](buffering.md#缓存、故障与恢复)
+此响应示例的 `window` 为便于阅读而省略内容，真实返回完整 v2 包（包含上一节所有字段）。`server_time` 用于客户端校准播放时钟；窗口内容不会套用参考状态组件的 2 秒视觉合并。`online` 表示窗口仍有效，不表示当前目标播放时刻已有覆盖。首次暖机、缺口和覆盖耗尽由客户端结合窗口判断。[推荐播放行为](buffering.md#缓存、故障与恢复)
 
 有效 v1 时返回原 `/api/now` 在线快照，加上 `mode: "snapshot"` 与 `server_time`；原 v1 接口自身不增加这两个字段。没有有效记录时精确返回 `{"status":"offline"}`。KV 错误为 503；断网或暂时旧读取时，播放器可继续使用已校验、未过期且覆盖播放头的内存窗口，不能无限延长最后状态。
 
@@ -308,7 +308,7 @@ Worker 不向 Apple 发起请求，不使用 Cache API 缓存封面，也不刷�
 
 接口不读取 KV、不调用第三方、不要求令牌，也不依赖 Mac 在线或上报成功；成功响应设置 `Cache-Control: public, max-age=3600`。资源存在 ETag 或 Last-Modified 时予以保留，并向静态资源层传递 `If-None-Match`、`If-Modified-Since`；未修改可返回 304，无正文。
 
-图片 API 的请求会执行 Worker。仅需图片展示时推荐相同资源的静态路径 `/app-icons/<id>.png`，无需执行 Worker；静态清单位于 `/app-icons/index.json`。首页使用静态路径，而清单的 `imageUrl` 保留统一 API 地址。[导出与发布](app-icons.md) · [接入示例](integrations.md#应用图标直链)
+图片 API 的请求会执行 Worker。仅需图片展示时推荐相同资源的静态路径 `/app-icons/<id>.png`，无需执行 Worker；静态清单位于 `/app-icons/index.json`。参考状态组件使用静态路径，而清单的 `imageUrl` 保留统一 API 地址。[导出与发布](app-icons.md) · [接入示例](integrations.md#应用图标直链)
 
 ## 错误格式
 

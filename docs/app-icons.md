@@ -4,7 +4,7 @@ import AppIconGallery from './.vitepress/theme/AppIconGallery.vue'
 
 # 应用图标
 
-首页在前台应用和 GUI 应用列表旁优先展示仓库中的原生 PNG，并提供可直接引用的图片 API。图标清单是维护者配置的有限集合，不是全量图标库，也不随实时运行列表自动扩充。未知应用、隐私屏蔽后的 `System` 或图片加载失败时显示占位，不影响应用名称与设备状态。
+参考状态组件在前台应用和 GUI 应用列表旁优先展示仓库中的原生 PNG，并提供可直接引用的图片 API。图标清单是维护者配置的有限集合，不是全量图标库，也不随实时运行列表自动扩充。未知应用、隐私屏蔽后的 `System` 或图片加载失败时显示占位，不影响应用名称与设备状态。
 
 ## 已发布图标
 
@@ -92,7 +92,7 @@ curl -I https://YOUR_HOST/api/icons/visual-studio-code.png
 
 `/api/icons` 与 `/api/icons/<id>.png` 均支持 GET、HEAD、OPTIONS，成功响应为公开 1 小时 HTTP 缓存，并保留资源 ETag 条件请求。图片接口返回真实 `image/png`，可直接放入 `<img src>`；未知图标返回 JSON 404。API 不访问 KV 或第三方服务，但进入接口会计 Worker 请求。
 
-只需展示图片时，推荐使用对应静态地址 `/app-icons/<id>.png`；首页也使用此地址，不执行 Worker 脚本。静态清单位于 `/app-icons/index.json`。`imageUrl` 保留 `/api/icons/...` 形式，便于统一 API 集成。[完整契约](api.md) · [嵌入示例](integrations.md#应用图标直链) · [额度区别](quotas.md#应用图标的请求与额度)
+只需展示图片时，推荐使用对应静态地址 `/app-icons/<id>.png`；参考状态组件也使用此地址，不执行 Worker 脚本。静态清单位于 `/app-icons/index.json`。`imageUrl` 保留 `/api/icons/...` 形式，便于统一 API 集成。[完整契约](api.md) · [嵌入示例](integrations.md#应用图标直链) · [额度区别](quotas.md#应用图标的请求与额度)
 
 ## 同步并发布
 
@@ -110,7 +110,7 @@ npm run deploy
 
 普通 `npm run docs:build` 不调用搜索 API；补充缓存不存在时会生成空清单，已有原生 PNG 仍可展示。只同步不会更新已部署页面，仍需发布。
 
-同步会跳过已有原生图标的配置项，`--force` 也不会搜索这些应用，避免为首页不会使用的补充图标消耗额度。只有尚未被原生图标覆盖的配置项需要第三方匹配。
+同步会跳过已有原生图标的配置项，`--force` 也不会搜索这些应用，避免为参考状态组件不会使用的补充图标消耗额度。只有尚未被原生图标覆盖的配置项需要第三方匹配。
 
 每条补充记录含 `fetchedAt` 和 `expiresAt`，最多有效 30 天；到期不再展示，需要重新同步并部署。同步会复用剩余有效期超过 2 天的补充记录，每个未复用、未被原生图标覆盖的应用最多搜索一次，不自动重试。确需重新查询补充项时可追加 `--force`，这会额外消耗额度；不要反复强制同步处理限流。[请求与用量](quotas.md#应用图标的请求与额度)
 
@@ -120,4 +120,4 @@ npm run deploy
 
 macOSicons 补充图标须保留作者、macOSicons 来源与图标链接，不删除页面标题或链接中的署名；有作者单独许可证时同时遵循其要求。不得转售图标。官方 API 条款要求响应缓存最多 30 天，并禁止建立目录的离线镜像或可搜索副本；本项目仅使用少量状态展示映射，不将该来源的响应或图片提交到 Git。[macOSicons API 条款](https://macosicons.com/developers/terms)
 
-缺失或占位见 [图标排查](troubleshooting.md#应用图标显示占位)，请求与公开范围见 [隐私说明](privacy.md#首页应用图标)。
+缺失或占位见 [图标排查](troubleshooting.md#应用图标显示占位)，请求与公开范围见 [隐私说明](privacy.md#参考状态组件应用图标)。
