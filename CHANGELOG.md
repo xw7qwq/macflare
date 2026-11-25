@@ -4,8 +4,6 @@ This file records implemented changes that have not yet been assigned to a forma
 
 ## Unreleased
 
-- Move the live status entry point to the xw7 panel and keep this site focused on agent and API documentation. Existing API routes remain available.
-
 ### Added
 
 - Native Bash/JXA collection for Apple Music, foreground and running GUI apps, battery, and system load, with independent privacy controls, sensitive-app filtering, and user LaunchAgent installation and removal.
@@ -19,6 +17,7 @@ This file records implemented changes that have not yet been assigned to a forma
 
 ### Changed
 
+- Move the live status entry point to the [xw7 panel](https://panel.lucius7.dev/now/) and keep this site focused on agent and API documentation. Existing API routes remain available.
 - Expand the native icon catalog from 45 to 108 entries with 63 additional installed apps, including VidHub. Existing icon IDs and links remain stable; Apple TV uses the existing `tv` icon, and VidHub recognizes both `VidHub` and `MediaCenter` names.
 - Extend native icon export to application-root property lists and installed iOS app wrappers. Wrapped apps are identified through their direct application bundle and prefer its declared PNG icon resources, converted with native macOS tools. The outer app's NSWorkspace icon is a fallback when declared resources are unavailable; no network searches or fabricated bundle identifiers are used.
 

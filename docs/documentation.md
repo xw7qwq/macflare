@@ -14,7 +14,7 @@
 | [接入示例](integrations.md) | 客户端消费、图片和博客示例 |
 | [文档导航](guide.md) | 阅读路径和页面入口 |
 
-正文位于 `docs/*.md`，导航和站点地址位于 `docs/.vitepress/config.mjs`，首页组件位于 `docs/.vitepress/theme/`。`docs/.vitepress/dist/` 是构建产物，不进入 Git。其他目录职责见 [仓库导航](guide.md#仓库职责)。
+正文位于 `docs/*.md`，导航和站点地址位于 `docs/.vitepress/config.mjs`，参考状态组件和主题位于 `docs/.vitepress/theme/`。`docs/.vitepress/dist/` 是构建产物，不进入 Git。其他目录职责见 [仓库导航](guide.md#仓库职责)。
 
 ## 本地开发
 
@@ -25,7 +25,7 @@ npm ci
 npm run docs:dev
 ```
 
-纯文档开发服务器没有 Worker API，首页会显示暂时无法读取；这不会尝试连接维护者实例。核验同域完整行为：
+纯文档开发服务器没有 Worker API，也不会连接维护者实例。核验同域完整行为：
 
 ```sh
 cp .dev.vars.example .dev.vars

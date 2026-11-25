@@ -4,7 +4,7 @@ outline: false
 
 # MacFlare 文档
 
-Mac 的状态展示已移到 [xw7 面板的「状态」页](https://lucius7.dev/now/)。这里保留采集器、部署和只读 API 的使用文档。
+Mac 的状态展示已移到 [xw7 面板的「状态」页](https://panel.lucius7.dev/now/)。这里保留采集器、部署和只读 API 的使用文档。
 
 MacFlare 本机由 macOS 原生 `launchd` 定时推送状态；API 继续提供音乐、应用和设备信息，现有博客组件和客户端可以继续使用。
 

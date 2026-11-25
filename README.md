@@ -5,7 +5,7 @@
 [![CI](https://github.com/xw7qwq/macflare/actions/workflows/ci.yml/badge.svg)](https://github.com/xw7qwq/macflare/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-[Live demo](https://macflare.lucius7.dev/) · [Documentation guide](https://macflare.lucius7.dev/guide) · [Quick start](https://macflare.lucius7.dev/getting-started) · [API reference](https://macflare.lucius7.dev/api) · [Changelog](CHANGELOG.md)
+[Live demo](https://panel.lucius7.dev/now/) · [Documentation guide](https://macflare.lucius7.dev/guide) · [Quick start](https://macflare.lucius7.dev/getting-started) · [API reference](https://macflare.lucius7.dev/api) · [Changelog](CHANGELOG.md)
 
 MacFlare supplies music, app, battery, and system status for blogs, Now Pages, and GitHub READMEs. The Mac pushes data out; the public API cannot execute commands on it or request local data.
 
@@ -16,13 +16,13 @@ The Agent uses native Bash, `osascript` (JXA), `curl`, `pmset`, and `launchd`. *
 - Apple Music state, title, artist, and optional matched Apple artwork; unavailable permissions degrade independently.
 - App names with a [repository-hosted native icon catalog](https://macflare.lucius7.dev/app-icons), plus optional macOSicons supplementation. Window titles, document paths, and process arguments are not collected.
 - Independent privacy switches, sensitive-app blocking, and a user LaunchAgent with install, update, and uninstall scripts.
-- Authenticated uploads, public JSON and SVG APIs, and a status page with documentation on the same Worker. No GitHub Pages deployment is needed.
+- Authenticated uploads, public JSON and SVG APIs, and the documentation site on the same Worker, with a reference status component for your own page. No GitHub Pages deployment is needed.
 
 **Status is public, including short-term activity in buffered mode.** A 15-minute window expires 10 minutes after its end: early events may remain available for about 25 minutes. Local checkpoints can lag, and third parties can retain public data. Review [privacy and retention](https://macflare.lucius7.dev/privacy) before installing.
 
 ## Quick start
 
-Use your own Cloudflare account and deployment for each Mac. The [live demo](https://macflare.lucius7.dev/) shows the maintainer's status and is not a shared upload service.
+Use your own Cloudflare account and deployment for each Mac. The [live demo](https://panel.lucius7.dev/now/) shows the maintainer's status through this API. The maintainer's deployment is not a shared upload service.
 
 ### 1. Deploy the site and API
 

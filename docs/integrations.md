@@ -42,7 +42,7 @@ curl -sS https://YOUR_HOST/api/timeline
 
 v2 一次返回完整窗口，包含基线、变化和缺口。不要只取 `events` 的最后一项显示：窗口有意提前送达，让页面按各事件原来的时间间隔回放。以响应的 `server_time` 校准时钟，正常目标是该时间减 420 秒；顺序应用目标时刻之前的事件，遇到缺口或尚未覆盖的时间则显示缓冲／采集中断。
 
-仓库提供可复用的 [WindowPlayback 状态机](https://github.com/xw7qwq/macflare/blob/main/shared/playback.js)，以及 [参考状态组件组件集成](https://github.com/xw7qwq/macflare/blob/main/docs/.vitepress/theme/NowStatus.vue)。先从同一仓库版本复制 `shared/playback.js` 与它直接依赖的 [shared/timeline.js](https://github.com/xw7qwq/macflare/blob/main/shared/timeline.js)，放入你自己前端入口旁的 `shared/` 目录，再由自己的构建工具打包或作为 ES modules 发布。下面的相对 import 指向你自己项目中的副本；本项目没有发布 npm 包，线上站点也不提供 `/shared/playback.js` 静态入口。最小调用顺序：
+仓库提供可复用的 [WindowPlayback 状态机](https://github.com/xw7qwq/macflare/blob/main/shared/playback.js)，以及 [参考状态组件](https://github.com/xw7qwq/macflare/blob/main/docs/.vitepress/theme/NowStatus.vue)。先从同一仓库版本复制 `shared/playback.js` 与它直接依赖的 [shared/timeline.js](https://github.com/xw7qwq/macflare/blob/main/shared/timeline.js)，放入你自己前端入口旁的 `shared/` 目录，再由自己的构建工具打包或作为 ES modules 发布。下面的相对 import 指向你自己项目中的副本；本项目没有发布 npm 包，线上站点也不提供 `/shared/playback.js` 静态入口。最小调用顺序：
 
 ```js
 import { WindowPlayback } from './shared/playback.js';

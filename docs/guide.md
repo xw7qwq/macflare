@@ -1,6 +1,6 @@
 # 文档导航
 
-MacFlare 的文档按部署者、接口使用者和贡献者的任务组织。本网站保留部署与接口文档；公开状态移至 [xw7 面板](https://lucius7.dev/now/)。如果要上报自己的 Mac，请部署独立的 Worker 与 KV。
+MacFlare 的文档按部署者、接口使用者和贡献者的任务组织。本网站保留部署与接口文档；公开状态移至 [xw7 面板](https://panel.lucius7.dev/now/)。如果要上报自己的 Mac，请部署独立的 Worker 与 KV。
 
 ## 部署自己的采集器与 API
 
